@@ -7,26 +7,39 @@ import { getCityData, getForecastData } from './helpers/api';
 import { URL } from './helpers/api';
 import { timeConverter } from './helpers/dateConverters';
 import storage from './helpers/storage';
+import Cookies from 'js-cookie';
 
 function Weather() {
   const [button, setButton] = useState('Now');
   const [cityInfo, setCityInfo] = useState('');
   const [forecastInfo, setForecastInfo] = useState('');
-  const [favoriteCities, setFavoriteCities] = useState([])
+  const [favoriteCities, setFavoriteCities] = useState(new Set());
 
-  // useEffect(async () => await handleCityName('Samara'), []);
+  useEffect(async () => await handleCityName(currentCity), []);
+
   useEffect(() => {
-    setFavoriteCities(new Set(storage.getFavoriteCities()))
-  },[])
+    setFavoriteCities(new Set(storage.getFavoriteCities()));
+  }, []);
 
-  useEffect (()=> {
-    setFavoriteCities([...favoriteCities, cityInfo.name]);
-  },[])
+  const currentCity = Cookies.get('currentCity')
+    ? Cookies.get('currentCity')
+    : 'Moscow';
 
-  function changeTab(tapedButton) {
-    setButton(tapedButton);
+  function handleFavCities(cityName) {
+    const addedCities = new Set(storage.getFavoriteCities());
+    addedCities.add(cityName);
+    storage.saveFavoriteCities(addedCities);
+    setFavoriteCities(addedCities);
   }
-
+  function changeTab(tappedButton) {
+    setButton(tappedButton);
+  }
+  function handleDelFavCity(cityName) {
+    const addedCities = new Set(storage.getFavoriteCities());
+    addedCities.delete(cityName);
+    storage.saveFavoriteCities(addedCities);
+    setFavoriteCities(addedCities);
+  }
   async function handleCityName(cityName) {
     const cityData = await getCityData(cityName);
     const forecastData = await getForecastData(cityName);
@@ -44,6 +57,7 @@ function Weather() {
     };
     setCityInfo(weatherData);
     setForecastInfo(forecastData);
+    Cookies.set('currentCity', weatherData.name, { expires: 1 / 24 });
   }
 
   return (
@@ -55,11 +69,18 @@ function Weather() {
             pressedButton={button}
             cityInfo={cityInfo}
             forecastInfo={forecastInfo}
-            onSetFavoriteCity={setFavoriteCities}
+            onHandleFavCities={handleFavCities}
+            favoriteCities={favoriteCities}
+            onHandleDelFavCity={handleDelFavCity}
           />
-          <ButtonList onChangeTab={changeTab} />
+          <ButtonList onChangeTab={changeTab} currentTab={button} />
         </div>
-        <AddedLocations cityInfo={cityInfo} onHandleCityName={handleCityName} favoriteCities={favoriteCities} />
+        <AddedLocations
+          cityInfo={cityInfo}
+          onHandleCityName={handleCityName}
+          favoriteCities={favoriteCities}
+          onHandleDelFavCity={handleDelFavCity}
+        />
       </div>
     </div>
   );

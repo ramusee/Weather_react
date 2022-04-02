@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import storage from '../helpers/storage';
-function AddedLocations({ cityInfo, favoriteCities}) {
+import React from 'react';
+function AddedLocations({ cityInfo, onHandleCityName, favoriteCities, onHandleDelFavCity}) {
 
   function handleCityItem(e) {
     const cityName = e.target.textContent;
     onHandleCityName(cityName);
   }
-
+  function onDelFavCity(cityName){
+    onHandleDelFavCity(cityName)
+  }
   return (
     <div className="locations">
       <div className="locations__header">
         <p className="locations__title">Added locations:</p>
       </div>
       <div className="cities__list">
-        {favoriteCities ? favoriteCities.map((item, index) => (
+        {favoriteCities.length === 0 ? null : Array.from(favoriteCities).map((item, index) => (
           <div key={index} onClick={handleCityItem} className="cities__item">
             <p className="added-city">{item}</p>
-            <button className="cities__delete-btn" type="button"></button>
+            <button onClick={()=> onDelFavCity(item)} className="cities__delete-btn" type="button"></button>
           </div>
-        )) : null}
+        ))}
       </div>
     </div>
   );

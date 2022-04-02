@@ -4,10 +4,24 @@ import WeatherDetails from './details';
 import WeatherForecast from './forecast';
 import { BUTTONS_VALUE } from './buttonList';
 
-function Tabs({ pressedButton, cityInfo, forecastInfo, onSetFavoriteCity }) {
+function Tabs({
+  pressedButton,
+  cityInfo,
+  forecastInfo,
+  onHandleFavCities,
+  favoriteCities,
+  onHandleDelFavCity,
+}) {
   switch (pressedButton) {
     case BUTTONS_VALUE.NOW:
-      return <WeatherNow cityInfo={cityInfo} onSetFavoriteCity={onSetFavoriteCity} />;
+      return (
+        <WeatherNow
+          cityInfo={cityInfo}
+          onHandleFavCities={onHandleFavCities}
+          favoriteCities={favoriteCities}
+          onHandleDelFavCity={onHandleDelFavCity}
+        />
+      );
     case BUTTONS_VALUE.DETAILS:
       return <WeatherDetails cityInfo={cityInfo} />;
     case BUTTONS_VALUE.FORECAST:

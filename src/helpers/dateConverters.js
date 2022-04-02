@@ -15,4 +15,4 @@ function dateConverter(UNIX_Date) {
   return fullDate;
 }
 
-export {timeConverter, dateConverter}
+export { timeConverter, dateConverter };

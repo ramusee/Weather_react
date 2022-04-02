@@ -1,14 +1,27 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import storage from '../helpers/storage';
 
-function WeatherNow({cityInfo, onSetFavoriteCity}) {
-  const[toggleBtn, setToggleBtn] = useState({isToggle: false})
-  const classes=['now__btn_heart']
-  
-  function onToggle(){
-    setToggleBtn({isToggle: !toggleBtn.isToggle})
-    onSetFavoriteCity([...favoriteCities, cityInfo.name])
+function WeatherNow({
+  cityInfo,
+  onHandleFavCities,
+  favoriteCities,
+  onHandleDelFavCity,
+}) {
+  const [toggleBtn, setToggleBtn] = useState({ isToggle: false });
+  const classes = ['now__btn_heart'];
+
+  favoriteCities.has(cityInfo.name)
+    ? (toggleBtn.isToggle = true)
+    : (toggleBtn.isToggle = false);
+
+  function onToggle() {
+    setToggleBtn({ isToggle: !toggleBtn.isToggle });
+    favoriteCities.has(cityInfo.name)
+      ? onHandleDelFavCity(cityInfo.name)
+      : onHandleFavCities(cityInfo.name);
+    console.log(favoriteCities);
   }
-  if(toggleBtn.isToggle) classes.push('now__btn_active')
+  if (toggleBtn.isToggle) classes.push('now__btn_active');
 
   return (
     <div className="current-weather__now">
