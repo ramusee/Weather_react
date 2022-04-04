@@ -1,15 +1,17 @@
-import React from 'react';
-import { useState } from 'react';
+import React, {useContext} from 'react';
+import CurrentButton from "../context";
 
-function TabButton({ name, onHandleTapButton, currentTab }) {
-  const [classes, setActive] = useState(new Set());
+function TabButton({ name }) {
+  const {button, setButton} = useContext(CurrentButton)
+
+  const classes = new Set();
   classes.add('tabs__item-btn');
 
   function handleOnClick(e) {
-    onHandleTapButton(e.target.textContent);
+    setButton(e.target.textContent);
   }
 
-  currentTab === name ? classes.add('active') : classes.delete('active');
+  button === name ? classes.add('active') : classes.delete('active');
 
   return (
     <button

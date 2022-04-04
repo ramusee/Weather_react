@@ -22,8 +22,7 @@ li {
   width: 600px;
   min-height: 435px;
   border: 8px solid #fff;
-  margin: 0 auto;
-  margin-top: 50px;
+  margin: 50px auto 0;
   box-sizing: border-box;
   border-radius: 10px;
 }
@@ -46,7 +45,6 @@ li {
 }
 .search__btn {
   background: none;
-  background-image: url(../images/search.svg);
   background-repeat: no-repeat;
   background-position: center;
   padding: 10px 20px;
@@ -161,7 +159,7 @@ li {
   margin-top: 20px;
   line-height: 1.4em;
 }
-.wearher-timetable__precipitation {
+.weather-timetable__precipitation {
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import storage from '../helpers/storage';
 
 function WeatherNow({
   cityInfo,
@@ -19,7 +18,6 @@ function WeatherNow({
     favoriteCities.has(cityInfo.name)
       ? onHandleDelFavCity(cityInfo.name)
       : onHandleFavCities(cityInfo.name);
-    console.log(favoriteCities);
   }
   if (toggleBtn.isToggle) classes.push('now__btn_active');
 
@@ -29,7 +27,7 @@ function WeatherNow({
       <img className="now__img" src={cityInfo.image} alt="" />
       <div className="now-wrapper">
         <p className="now__city city-name">{cityInfo.name}</p>
-        <button onClick={onToggle} className={classes.join(' ')}></button>
+        <button onClick={onToggle} className={classes.join(' ')}/>
       </div>
     </div>
   );

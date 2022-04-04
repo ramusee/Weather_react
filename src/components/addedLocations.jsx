@@ -1,5 +1,6 @@
 import React from 'react';
-function AddedLocations({ cityInfo, onHandleCityName, favoriteCities, onHandleDelFavCity}) {
+
+function AddedLocations({ onHandleCityName, favoriteCities, onHandleDelFavCity}) {
 
   function handleCityItem(e) {
     const cityName = e.target.textContent;

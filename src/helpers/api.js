@@ -10,7 +10,6 @@ export async function getCityData(cityName) {
   if (!cityName) return;
   const urlWeather = `${URL.WEATHER_SERVER}?q=${cityName}&appid=${URL.API_KEY}${URL.METRIC}`;
   try {
-    console.log(urlWeather);
     const response = await fetch(urlWeather);
     const dataCity = await response.json();
     if (!dataCity.name) {

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
+import storage from './helpers/storage';
+import {URL} from './helpers/api';
+import {getCityData, getForecastData} from './helpers/api';
+import {timeConverter} from './helpers/dateConverters';
+import Cookies from 'js-cookie';
 import WeatherSearch from './components/search';
 import AddedLocations from './components/addedLocations';
 import Tabs from './components/tabs';
-import { ButtonList } from './components/buttonList';
-import { getCityData, getForecastData } from './helpers/api';
-import { URL } from './helpers/api';
-import { timeConverter } from './helpers/dateConverters';
-import storage from './helpers/storage';
-import Cookies from 'js-cookie';
+import {ButtonList} from './components/buttonList';
+import CurrentButton from './context';
 
 function Weather() {
   const [button, setButton] = useState('Now');
@@ -15,7 +16,9 @@ function Weather() {
   const [forecastInfo, setForecastInfo] = useState('');
   const [favoriteCities, setFavoriteCities] = useState(new Set());
 
-  useEffect(async () => await handleCityName(currentCity), []);
+  useEffect(async () => {
+    await handleCityName(currentCity);
+  }, []);
 
   useEffect(() => {
     setFavoriteCities(new Set(storage.getFavoriteCities()));
@@ -31,15 +34,18 @@ function Weather() {
     storage.saveFavoriteCities(addedCities);
     setFavoriteCities(addedCities);
   }
+
   function changeTab(tappedButton) {
     setButton(tappedButton);
   }
+
   function handleDelFavCity(cityName) {
     const addedCities = new Set(storage.getFavoriteCities());
     addedCities.delete(cityName);
     storage.saveFavoriteCities(addedCities);
     setFavoriteCities(addedCities);
   }
+
   async function handleCityName(cityName) {
     const cityData = await getCityData(cityName);
     const forecastData = await getForecastData(cityName);
@@ -57,14 +63,15 @@ function Weather() {
     };
     setCityInfo(weatherData);
     setForecastInfo(forecastData);
-    Cookies.set('currentCity', weatherData.name, { expires: 1 / 24 });
+    Cookies.set('currentCity', weatherData.name, {expires: 1 / 24});
   }
 
   return (
     <div className="weather">
-      <WeatherSearch onHandleCityName={handleCityName} />
+      <WeatherSearch onHandleCityName={handleCityName}/>
       <div className="container">
         <div className="current-weather">
+
           <Tabs
             pressedButton={button}
             cityInfo={cityInfo}
@@ -73,10 +80,11 @@ function Weather() {
             favoriteCities={favoriteCities}
             onHandleDelFavCity={handleDelFavCity}
           />
-          <ButtonList onChangeTab={changeTab} currentTab={button} />
+          <CurrentButton.Provider value={{button, setButton}}>
+            <ButtonList />
+          </CurrentButton.Provider>
         </div>
         <AddedLocations
-          cityInfo={cityInfo}
           onHandleCityName={handleCityName}
           favoriteCities={favoriteCities}
           onHandleDelFavCity={handleDelFavCity}

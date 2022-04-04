@@ -1,8 +1,8 @@
 import React from 'react';
-import { URL } from '../helpers/api';
-import { dateConverter, timeConverter } from '../helpers/dateConverters';
+import {URL} from '../helpers/api';
+import {dateConverter, timeConverter} from '../helpers/dateConverters';
 
-function WeatherForecast({ cityInfo, forecastInfo }) {
+function WeatherForecast({cityInfo, forecastInfo}) {
   let forecastItems = [];
   forecastItems = forecastInfo.list;
 
@@ -15,10 +15,10 @@ function WeatherForecast({ cityInfo, forecastInfo }) {
             <p className="weather-timetable__date">{dateConverter(item.dt)}</p>
             <p className="weather-timetable__time">{timeConverter(item.dt)}</p>
             <p className="weather-timetable__temp">
-              Temperature: {Math.round(item.main.temp)}°<br />
+              Temperature: {Math.round(item.main.temp)}°<br/>
               Feels like: {Math.round(item.main.feels_like)}°
             </p>
-            <div className="wearher-timetable__precipitation">
+            <div className="weather-timetable__precipitation">
               <p className="precipitation__title">{item.weather[0].main}</p>
               <img
                 className="precipitation__img"
