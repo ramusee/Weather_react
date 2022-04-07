@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
+import store from "../appState/store";
 
 function WeatherNow({
   cityInfo,
   onHandleFavCities,
-  favoriteCities,
   onHandleDelFavCity,
 }) {
   const [toggleBtn, setToggleBtn] = useState({ isToggle: false });
   const classes = ['now__btn_heart'];
+  const favoriteCities = store.getState().locations
 
-  favoriteCities.has(cityInfo.name)
+  favoriteCities.includes(cityInfo.name)
     ? (toggleBtn.isToggle = true)
     : (toggleBtn.isToggle = false);
 
   function onToggle() {
     setToggleBtn({ isToggle: !toggleBtn.isToggle });
-    favoriteCities.has(cityInfo.name)
+    favoriteCities.includes(cityInfo.name)
       ? onHandleDelFavCity(cityInfo.name)
       : onHandleFavCities(cityInfo.name);
   }

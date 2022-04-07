@@ -9,41 +9,37 @@ import AddedLocations from './components/addedLocations';
 import Tabs from './components/tabs';
 import {ButtonList} from './components/buttonList';
 import CurrentButton from './context';
+import {setCurrentLocation, removeLocation, addLocation} from './appState/actions';
+import store from './appState/store';
 
 function Weather() {
   const [button, setButton] = useState('Now');
   const [cityInfo, setCityInfo] = useState('');
   const [forecastInfo, setForecastInfo] = useState('');
-  const [favoriteCities, setFavoriteCities] = useState(new Set());
+  // const [favoriteCities, setFavoriteCities] = useState(new Set());
 
   useEffect(async () => {
     await handleCityName(currentCity);
   }, []);
 
   useEffect(() => {
-    setFavoriteCities(new Set(storage.getFavoriteCities()));
+    store.dispatch(addLocation(storage.getFavoriteCities()))
   }, []);
 
-  const currentCity = Cookies.get('currentCity')
-    ? Cookies.get('currentCity')
-    : 'Moscow';
+  const currentCity = Cookies.get('currentCity') ? Cookies.get('currentCity') : 'Moscow';
 
   function handleFavCities(cityName) {
     const addedCities = new Set(storage.getFavoriteCities());
     addedCities.add(cityName);
     storage.saveFavoriteCities(addedCities);
-    setFavoriteCities(addedCities);
-  }
-
-  function changeTab(tappedButton) {
-    setButton(tappedButton);
+    store.dispatch(addLocation(Array.from(addedCities)));
   }
 
   function handleDelFavCity(cityName) {
     const addedCities = new Set(storage.getFavoriteCities());
     addedCities.delete(cityName);
     storage.saveFavoriteCities(addedCities);
-    setFavoriteCities(addedCities);
+    store.dispatch(removeLocation(Array.from(addedCities)));
   }
 
   async function handleCityName(cityName) {
@@ -66,32 +62,28 @@ function Weather() {
     Cookies.set('currentCity', weatherData.name, {expires: 1 / 24});
   }
 
-  return (
-    <div className="weather">
-      <WeatherSearch onHandleCityName={handleCityName}/>
-      <div className="container">
-        <div className="current-weather">
+  return (<div className="weather">
+    <WeatherSearch onHandleCityName={handleCityName}/>
+    <div className="container">
+      <div className="current-weather">
 
-          <Tabs
-            pressedButton={button}
-            cityInfo={cityInfo}
-            forecastInfo={forecastInfo}
-            onHandleFavCities={handleFavCities}
-            favoriteCities={favoriteCities}
-            onHandleDelFavCity={handleDelFavCity}
-          />
-          <CurrentButton.Provider value={{button, setButton}}>
-            <ButtonList />
-          </CurrentButton.Provider>
-        </div>
-        <AddedLocations
-          onHandleCityName={handleCityName}
-          favoriteCities={favoriteCities}
+        <Tabs
+          pressedButton={button}
+          cityInfo={cityInfo}
+          forecastInfo={forecastInfo}
+          onHandleFavCities={handleFavCities}
           onHandleDelFavCity={handleDelFavCity}
         />
+        <CurrentButton.Provider value={{button, setButton}}>
+          <ButtonList/>
+        </CurrentButton.Provider>
       </div>
+      <AddedLocations
+        onHandleCityName={handleCityName}
+        onHandleDelFavCity={handleDelFavCity}
+      />
     </div>
-  );
+  </div>);
 }
 
 export default Weather;

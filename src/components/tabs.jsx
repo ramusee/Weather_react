@@ -9,7 +9,6 @@ function Tabs({
   cityInfo,
   forecastInfo,
   onHandleFavCities,
-  favoriteCities,
   onHandleDelFavCity,
 }) {
   switch (pressedButton) {
@@ -18,7 +17,6 @@ function Tabs({
         <WeatherNow
           cityInfo={cityInfo}
           onHandleFavCities={onHandleFavCities}
-          favoriteCities={favoriteCities}
           onHandleDelFavCity={onHandleDelFavCity}
         />
       );
