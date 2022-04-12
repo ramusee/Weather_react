@@ -10,20 +10,19 @@ const initialState = {
 function addedLocations(state = [], action) {
   switch (action.type) {
     case ACTION_TYPES.ADD_LOCATION:
-      if(state.includes(action.location)) return
-      const addedCities = new Set(storage.getFavoriteCities());
-      addedCities.add(action.location);
-      storage.saveFavoriteCities(addedCities);
-      return [...state, action.location]
+      if (state.includes(action.location)) return
+      const newState = [...state, action.location]
+      storage.saveFavoriteCities(newState);
+      return newState
     case ACTION_TYPES.REMOVE_LOCATION:
-      const _addedCities = new Set(storage.getFavoriteCities());
-      _addedCities.delete(action.location);
-      storage.saveFavoriteCities(_addedCities);
-      return state.filter(item => item !== action.location)
+      const _newState = state.filter(item => item !== action.location)
+      storage.saveFavoriteCities(_newState);
+      return _newState
     default:
       return state
   }
 }
+
 function setCurrentLocation(state = '', action) {
   switch (action.type) {
     case ACTION_TYPES.SET_CURRENT_LOCATION:
