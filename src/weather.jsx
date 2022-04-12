@@ -1,47 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import storage from './helpers/storage';
 import {URL} from './helpers/api';
 import {getCityData, getForecastData} from './helpers/api';
 import {timeConverter} from './helpers/dateConverters';
-import Cookies from 'js-cookie';
 import WeatherSearch from './components/search';
 import AddedLocations from './components/addedLocations';
 import Tabs from './components/tabs';
 import {ButtonList} from './components/buttonList';
 import CurrentButton from './context';
-import {setCurrentLocation, removeLocation, addLocation} from './appState/actions';
-import store from './appState/store';
+import {useDispatch, useSelector} from "react-redux";
+import {setCurrentLocation} from "./appState/actions";
 
 function Weather() {
   const [button, setButton] = useState('Now');
   const [cityInfo, setCityInfo] = useState('');
   const [forecastInfo, setForecastInfo] = useState('');
-  // const [favoriteCities, setFavoriteCities] = useState(new Set());
 
   useEffect(async () => {
     await handleCityName(currentCity);
   }, []);
 
-  useEffect(() => {
-    store.dispatch(addLocation(storage.getFavoriteCities()))
-  }, []);
-
-  const currentCity = Cookies.get('currentCity') ? Cookies.get('currentCity') : 'Moscow';
-
-  function handleFavCities(cityName) {
-    const addedCities = new Set(storage.getFavoriteCities());
-    addedCities.add(cityName);
-    storage.saveFavoriteCities(addedCities);
-    store.dispatch(addLocation(Array.from(addedCities)));
-  }
-
-  function handleDelFavCity(cityName) {
-    const addedCities = new Set(storage.getFavoriteCities());
-    addedCities.delete(cityName);
-    storage.saveFavoriteCities(addedCities);
-    store.dispatch(removeLocation(Array.from(addedCities)));
-  }
-
+  const dispatch = useDispatch()
+  const currentCity = useSelector(state => state.currentLocation)
   async function handleCityName(cityName) {
     const cityData = await getCityData(cityName);
     const forecastData = await getForecastData(cityName);
@@ -59,7 +38,7 @@ function Weather() {
     };
     setCityInfo(weatherData);
     setForecastInfo(forecastData);
-    Cookies.set('currentCity', weatherData.name, {expires: 1 / 24});
+    dispatch(setCurrentLocation(cityName))
   }
 
   return (<div className="weather">
@@ -71,8 +50,6 @@ function Weather() {
           pressedButton={button}
           cityInfo={cityInfo}
           forecastInfo={forecastInfo}
-          onHandleFavCities={handleFavCities}
-          onHandleDelFavCity={handleDelFavCity}
         />
         <CurrentButton.Provider value={{button, setButton}}>
           <ButtonList/>
@@ -80,7 +57,6 @@ function Weather() {
       </div>
       <AddedLocations
         onHandleCityName={handleCityName}
-        onHandleDelFavCity={handleDelFavCity}
       />
     </div>
   </div>);

@@ -5,7 +5,6 @@ const ACTION_TYPES = {
 }
 
 function addLocation(location) {
-  console.log(location)
   return {
     type: ACTION_TYPES.ADD_LOCATION,
     location
