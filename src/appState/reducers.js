@@ -1,5 +1,5 @@
 import {ACTION_TYPES} from "./actions";
-import storage from "../helpers/storage";
+import storage from "../helpers/localStorage";
 import Cookies from "js-cookie";
 
 const initialState = {

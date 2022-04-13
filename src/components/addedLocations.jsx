@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {removeLocation} from "../appState/actions";
 
-function AddedLocations({onHandleCityName, onHandleDelFavCity}) {
+function AddedLocations({onHandleCityName}) {
 
   const favoriteCities = useSelector(state => state.locations)
   const dispatch = useDispatch()
