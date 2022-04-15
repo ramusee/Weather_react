@@ -11,11 +11,11 @@ export async function getCityData(cityName) {
   const urlWeather = `${URL.WEATHER_SERVER}?q=${cityName}&appid=${URL.API_KEY}${URL.METRIC}`;
   try {
     const response = await fetch(urlWeather);
-    const dataCity = await response.json();
-    if (!dataCity.name) {
-      throw new Error(dataCity.message);
+    const locationData = await response.json();
+    if (!locationData.name) {
+      throw new Error(locationData.message);
     } else {
-      return dataCity;
+      return locationData;
     }
   } catch (error) {
     alert(`Oops: ${error.message}`);
@@ -24,7 +24,15 @@ export async function getCityData(cityName) {
 export async function getForecastData(cityName) {
   if (!cityName) return;
   const urlForecast = `${URL.FORECAST_SERVER}?q=${cityName}&appid=${URL.API_KEY}${URL.METRIC}`;
-  const response = await fetch(urlForecast);
-  const dataForecast = await response.json();
-  return dataForecast;
+  try {
+    const response = await fetch(urlForecast);
+    const forecastData = await response.json();
+    if (!forecastData.list) {
+      throw new Error()
+    } else {
+      return forecastData;
+    }
+  } catch {
+    return
+  }
 }

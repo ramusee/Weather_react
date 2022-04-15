@@ -1,6 +1,8 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {removeLocation} from "../appState/actions";
+import storage from "../helpers/localStorage";
+import store from "../appState/store";
 
 function AddedLocations({onHandleCityName}) {
 
@@ -9,11 +11,13 @@ function AddedLocations({onHandleCityName}) {
 
   function handleCityItem(e) {
     const cityName = e.target.textContent;
-    onHandleCityName(cityName);
+    if (cityName === store.getState().currentLocation) return
+    onHandleCityName(cityName)
   }
 
   function onDelFavCity(cityName) {
     dispatch(removeLocation(cityName))
+    storage.saveFavoriteCities(store.getState().locations)
   }
 
   return (
