@@ -8,18 +8,12 @@ function Tabs({
   pressedButton,
   cityInfo,
   forecastInfo,
-  onHandleFavCities,
-  favoriteCities,
-  onHandleDelFavCity,
 }) {
   switch (pressedButton) {
     case BUTTONS_VALUE.NOW:
       return (
         <WeatherNow
           cityInfo={cityInfo}
-          onHandleFavCities={onHandleFavCities}
-          favoriteCities={favoriteCities}
-          onHandleDelFavCity={onHandleDelFavCity}
         />
       );
     case BUTTONS_VALUE.DETAILS:

@@ -36,7 +36,7 @@ li {
 }
 .search__input {
   width: 100%;
-  font-family: 'Rubik';
+  font-family: 'Rubik', serif;
   border: none;
   min-height: 45px;
   font-size: 20px;
@@ -129,8 +129,7 @@ li {
 /* FORECAST */
 
 .current-weather__forecast {
-  padding: 15px;
-  padding-right: 0;
+  padding: 15px 0 15px 15px;
 }
 .forecast__city {
   margin-top: 10px;
@@ -227,8 +226,7 @@ li {
 }
 .locations__header {
   margin-top: 20px;
-  padding: 10px;
-  padding-bottom: 8px;
+  padding: 10px 10px 8px;
   border-bottom: 1px solid black;
 }
 .locations__title {
@@ -239,16 +237,16 @@ li {
 }
 .cities__list {
   display: flex;
-  flex-direction: column-reverse;
-  justify-content: start;
-  overflow: auto;
+  flex-direction: column;
+  justify-content: flex-start;
   height: 270px;
   margin-left: 10px;
   margin-top: 10px;
+  overflow: auto;
 }
-.cities__list::-webkit-scrollbar {
-  display: none;
-}
+/*.cities__list::-webkit-scrollbar {*/
+/*  display: none;*/
+/*}*/
 .cities__item {
   margin-top: 5px;
   display: flex;

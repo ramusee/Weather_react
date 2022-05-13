@@ -6,7 +6,7 @@ const storage = {
     );
   },
   getFavoriteCities() {
-    return JSON.parse(localStorage.getItem('favoriteCities'));
+    return JSON.parse(localStorage.getItem('favoriteCities')) || [];
   },
   saveCurrentCity(currentCity) {
     return localStorage.setItem('currentCity', JSON.stringify(currentCity));

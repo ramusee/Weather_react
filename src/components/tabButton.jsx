@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import CurrentButton from "../context";
 
-function TabButton({ name }) {
+function TabButton({name}) {
   const {button, setButton} = useContext(CurrentButton)
 
   const classes = new Set();
@@ -23,4 +23,5 @@ function TabButton({ name }) {
     </button>
   );
 }
+
 export default TabButton;
